@@ -166,7 +166,7 @@ const Contact = () => {
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Contact Form */}
-          <form
+          {/* <form
             ref={formRef}
             onSubmit={handleSubmit}
             className="p-6 sm:p-8 rounded-2xl glass border border-cyan-500/20"
@@ -254,7 +254,7 @@ const Contact = () => {
                 )}
               </button>
             </div>
-          </form>
+          </form> */}
 
           {/* Contact Info */}
           <div ref={infoRef} className="space-y-8">
