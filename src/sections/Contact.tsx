@@ -1,14 +1,31 @@
-import { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Mail, Phone, MapPin, Send, Linkedin, Github, Twitter, ArrowUpRight } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  Linkedin,
+  Github,
+  ArrowUpRight,
+} from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const socialLinks = [
-  { icon: Linkedin, label: 'LinkedIn', href: '#', color: 'hover:text-blue-400' },
-  { icon: Github, label: 'GitHub', href: '#', color: 'hover:text-white' },
-  { icon: Twitter, label: 'Twitter', href: '#', color: 'hover:text-sky-400' },
+  {
+    icon: Linkedin,
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/synectron/",
+    color: "hover:text-blue-400",
+  },
+  {
+    icon: Github,
+    label: "GitHub",
+    href: "https://github.com/Synectron",
+    color: "hover:text-white",
+  },
 ];
 
 const Contact = () => {
@@ -17,9 +34,9 @@ const Contact = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const infoRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
+    name: "",
+    email: "",
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -34,13 +51,13 @@ const Contact = () => {
           opacity: 1,
           y: 0,
           duration: 0.8,
-          ease: 'power3.out',
+          ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none reverse',
+            start: "top 80%",
+            toggleActions: "play none none reverse",
           },
-        }
+        },
       );
 
       // Form animation
@@ -51,13 +68,13 @@ const Contact = () => {
           opacity: 1,
           x: 0,
           duration: 0.8,
-          ease: 'power3.out',
+          ease: "power3.out",
           scrollTrigger: {
             trigger: formRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none reverse',
+            start: "top 85%",
+            toggleActions: "play none none reverse",
           },
-        }
+        },
       );
 
       // Info animation
@@ -68,13 +85,13 @@ const Contact = () => {
           opacity: 1,
           x: 0,
           duration: 0.8,
-          ease: 'power3.out',
+          ease: "power3.out",
           scrollTrigger: {
             trigger: infoRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none reverse',
+            start: "top 85%",
+            toggleActions: "play none none reverse",
           },
-        }
+        },
       );
     }, sectionRef);
 
@@ -84,20 +101,20 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    
+
     setIsSubmitting(false);
     setSubmitted(true);
-    setFormData({ name: '', email: '', message: '' });
-    
+    setFormData({ name: "", email: "", message: "" });
+
     // Reset submitted state after 3 seconds
     setTimeout(() => setSubmitted(false), 3000);
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setFormData((prev) => ({
       ...prev,
@@ -139,11 +156,11 @@ const Contact = () => {
             Get in Touch
           </span>
           <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4">
-            Let's Build Something{' '}
-            <span className="text-gradient">Great</span>
+            Let's Build Something <span className="text-gradient">Great</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Have a project in mind? Let's discuss how we can work together to bring your ideas to life.
+            Have a project in mind? Let's discuss how we can work together to
+            bring your ideas to life.
           </p>
         </div>
 
@@ -160,7 +177,10 @@ const Contact = () => {
 
             <div className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm text-muted-foreground mb-2">
+                <label
+                  htmlFor="name"
+                  className="block text-sm text-muted-foreground mb-2"
+                >
                   Your Name
                 </label>
                 <input
@@ -176,7 +196,10 @@ const Contact = () => {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm text-muted-foreground mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm text-muted-foreground mb-2"
+                >
                   Email Address
                 </label>
                 <input
@@ -192,7 +215,10 @@ const Contact = () => {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm text-muted-foreground mb-2">
+                <label
+                  htmlFor="message"
+                  className="block text-sm text-muted-foreground mb-2"
+                >
                   Message
                 </label>
                 <textarea
@@ -212,8 +238,8 @@ const Contact = () => {
                 disabled={isSubmitting}
                 className={`w-full py-4 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all duration-300 ${
                   submitted
-                    ? 'bg-green-500 text-white'
-                    : 'bg-cyan-500 text-void hover:bg-cyan-400 hover:shadow-glow'
+                    ? "bg-green-500 text-white"
+                    : "bg-cyan-500 text-void hover:bg-cyan-400 hover:shadow-glow"
                 }`}
               >
                 {isSubmitting ? (
@@ -237,8 +263,9 @@ const Contact = () => {
                 Contact Information
               </h3>
               <p className="text-muted-foreground mb-8">
-                Feel free to reach out through any of these channels. I'm always open to
-                discussing new projects, creative ideas, or opportunities.
+                Feel free to reach out through any of these channels. I'm always
+                open to discussing new projects, creative ideas, or
+                opportunities.
               </p>
             </div>
 
@@ -289,7 +316,9 @@ const Contact = () => {
 
             {/* Social links */}
             <div>
-              <p className="text-sm text-muted-foreground mb-4">Connect on social media</p>
+              <p className="text-sm text-muted-foreground mb-4">
+                Connect on social media
+              </p>
               <div className="flex gap-3">
                 {socialLinks.map((social) => (
                   <a
@@ -309,7 +338,9 @@ const Contact = () => {
               <div className="flex items-center gap-3">
                 <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
                 <div>
-                  <p className="text-white font-medium">Available for opportunities</p>
+                  <p className="text-white font-medium">
+                    Available for opportunities
+                  </p>
                   <p className="text-sm text-muted-foreground">
                     Open to full-time roles and consulting projects
                   </p>
