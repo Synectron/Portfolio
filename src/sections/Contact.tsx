@@ -126,7 +126,7 @@ const Contact = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center justify-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 place-items-center">
           <div
             ref={infoRef}
             className="space-y-8 lg:px-8 lg:max-w-lg lg:mx-auto"
