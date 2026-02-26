@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
-import { ChevronDown, Mail, Phone, MapPin } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ChevronDown, Mail, Phone, MapPin } from "lucide-react";
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -14,24 +14,24 @@ const Hero = () => {
     const ctx = gsap.context(() => {
       // Initial entrance animation
       const tl = gsap.timeline({ delay: 0.3 });
-      
+
       tl.fromTo(
         nameRef.current,
         { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
+        { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
       )
-      .fromTo(
-        titleRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
-        '-=0.5'
-      )
-      .fromTo(
-        imageRef.current,
-        { opacity: 0, scale: 0.8 },
-        { opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(1.7)' },
-        '-=0.6'
-      );
+        .fromTo(
+          titleRef.current,
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+          "-=0.5",
+        )
+        .fromTo(
+          imageRef.current,
+          { opacity: 0, scale: 0.8 },
+          { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.7)" },
+          "-=0.6",
+        );
     }, heroRef);
 
     return () => ctx.revert();
@@ -47,14 +47,14 @@ const Hero = () => {
       setMousePosition({ x, y });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   const scrollToAbout = () => {
-    const aboutSection = document.getElementById('about');
+    const aboutSection = document.getElementById("about");
     if (aboutSection) {
-      aboutSection.scrollIntoView({ behavior: 'smooth' });
+      aboutSection.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -66,7 +66,7 @@ const Hero = () => {
     >
       {/* Animated background gradient */}
       <div className="absolute inset-0 bg-gradient-radial from-cyan-500/5 via-transparent to-transparent opacity-50" />
-      
+
       {/* Floating particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (
@@ -110,8 +110,10 @@ const Hero = () => {
               ref={titleRef}
               className="font-mono text-lg sm:text-xl text-cyan-400 mb-8"
             >
-              SENIOR FRONTEND ENGINEER
-              <span ref={cursorRef} className="animate-blink ml-1">|</span>
+              SENIOR SOFTWARE ENGINEER
+              <span ref={cursorRef} className="animate-blink ml-1">
+                |
+              </span>
             </p>
 
             {/* Contact info */}
@@ -121,7 +123,9 @@ const Hero = () => {
                 className="flex items-center gap-2 hover:text-cyan-400 transition-colors duration-300"
               >
                 <Mail className="w-4 h-4" />
-                <span className="hidden sm:inline">shubhammishrax@gmail.com</span>
+                <span className="hidden sm:inline">
+                  shubhammishrax@gmail.com
+                </span>
               </a>
               <a
                 href="tel:+917985307697"
@@ -160,12 +164,12 @@ const Hero = () => {
               className="relative"
               style={{
                 transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
-                transition: 'transform 0.3s ease-out',
+                transition: "transform 0.3s ease-out",
               }}
             >
               {/* Glow ring */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 blur-2xl opacity-30 animate-pulse-glow" />
-              
+
               {/* Image container */}
               <div className="relative w-64 h-80 sm:w-72 sm:h-96 lg:w-80 lg:h-[28rem] rounded-2xl overflow-hidden border-2 border-cyan-500/30 animate-pulse-glow shadow-2xl">
                 <img
@@ -190,7 +194,9 @@ const Hero = () => {
         onClick={scrollToAbout}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground hover:text-cyan-400 transition-colors cursor-pointer"
       >
-        <span className="text-xs font-mono uppercase tracking-wider">Scroll</span>
+        <span className="text-xs font-mono uppercase tracking-wider">
+          Scroll
+        </span>
         <ChevronDown className="w-5 h-5 animate-bounce" />
       </button>
     </section>
