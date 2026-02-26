@@ -1,17 +1,18 @@
-import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Heart, ArrowUp, Code2 } from 'lucide-react';
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Heart, ArrowUp, Code2 } from "lucide-react";
+import VisitorCounter from "../lib/visitorCounter";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const navLinks = [
-  { label: 'About', href: '#about' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Achievements', href: '#achievements' },
-  { label: 'Contact', href: '#contact' },
+  { label: "About", href: "#about" },
+  { label: "Experience", href: "#experience" },
+  { label: "Skills", href: "#skills" },
+  { label: "Projects", href: "#projects" },
+  { label: "Achievements", href: "#achievements" },
+  { label: "Contact", href: "#contact" },
 ];
 
 const Footer = () => {
@@ -27,13 +28,13 @@ const Footer = () => {
           opacity: 1,
           y: 0,
           duration: 0.8,
-          ease: 'power3.out',
+          ease: "power3.out",
           scrollTrigger: {
             trigger: footerRef.current,
-            start: 'top 90%',
-            toggleActions: 'play none none reverse',
+            start: "top 90%",
+            toggleActions: "play none none reverse",
           },
-        }
+        },
       );
     }, footerRef);
 
@@ -41,7 +42,7 @@ const Footer = () => {
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -62,8 +63,9 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-              Senior Frontend Engineer crafting robust, accessible, and performant digital
-              experiences. Let's build something great together.
+              Senior Frontend Engineer crafting robust, accessible, and
+              performant digital experiences. Let's build something great
+              together.
             </p>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
@@ -115,11 +117,15 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-cyan-500/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground flex items-center gap-1">
-            Made with <Heart className="w-4 h-4 text-red-500 fill-red-500" /> by Shubham Mishra
+            Made with <Heart className="w-4 h-4 text-red-500 fill-red-500" /> by
+            Shubham Mishra
           </p>
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} All rights reserved.
           </p>
+          <div className="flex items-center gap-4">
+            <VisitorCounter />
+          </div>
           <button
             onClick={scrollToTop}
             className="group flex items-center gap-2 px-4 py-2 rounded-lg glass text-sm text-muted-foreground hover:text-cyan-400 hover:border-cyan-500/30 border border-transparent transition-all duration-300"
