@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useCallback } from 'react';
+import React, { useLayoutEffect, useRef, useCallback, useState } from 'react';
 import Lenis from 'lenis';
 import './ScrollStack.css';
 
@@ -30,6 +30,8 @@ export interface ScrollStackProps {
   onStackComplete?: () => void;
 }
 
+const MOBILE_MQ = '(max-width: 1023px), (pointer: coarse)';
+
 const ScrollStack: React.FC<ScrollStackProps> = ({
   children,
   className = '',
@@ -52,6 +54,17 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   const initialTopsRef = useRef<number[]>([]);
   const lastTransformsRef = useRef(new Map());
   const isUpdatingRef = useRef(false);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia(MOBILE_MQ).matches : false
+  );
+
+  useLayoutEffect(() => {
+    const mq = window.matchMedia(MOBILE_MQ);
+    const onChange = () => setIsMobile(mq.matches);
+    onChange();
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
 
   const calculateProgress = useCallback((scrollTop: number, start: number, end: number) => {
     if (scrollTop < start) return 0;
@@ -72,13 +85,12 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
         scrollTop: window.scrollY,
         containerHeight: window.innerHeight,
       };
-    } else {
-      const scroller = scrollerRef.current;
-      return {
-        scrollTop: scroller ? scroller.scrollTop : 0,
-        containerHeight: scroller ? scroller.clientHeight : 0,
-      };
     }
+    const scroller = scrollerRef.current;
+    return {
+      scrollTop: scroller ? scroller.scrollTop : 0,
+      containerHeight: scroller ? scroller.clientHeight : 0,
+    };
   }, [useWindowScroll]);
 
   const updateCardTransforms = useCallback(() => {
@@ -90,10 +102,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     const stackPositionPx = parsePercentage(stackPosition, containerHeight);
     const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight);
 
-    const endElement = useWindowScroll
-      ? (document.querySelector('.scroll-stack-end') as HTMLElement)
-      : (scrollerRef.current?.querySelector('.scroll-stack-end') as HTMLElement);
-
+    const endElement = scrollerRef.current?.querySelector('.scroll-stack-end') as HTMLElement | null;
     const endElementTop = endElement
       ? endElement.getBoundingClientRect().top + window.scrollY
       : 0;
@@ -183,7 +192,6 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     baseScale,
     rotationAmount,
     blurAmount,
-    useWindowScroll,
     onStackComplete,
     calculateProgress,
     parsePercentage,
@@ -194,36 +202,29 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     updateCardTransforms();
   }, [updateCardTransforms]);
 
-  const setupLenis = useCallback(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-      infinite: false,
-    });
-
-    lenis.on('scroll', handleScroll);
-
-    const raf = (time: number) => {
-      lenis.raf(time);
-      animationFrameRef.current = requestAnimationFrame(raf);
-    };
-    animationFrameRef.current = requestAnimationFrame(raf);
-
-    lenisRef.current = lenis;
-    return lenis;
-  }, [handleScroll]);
-
   useLayoutEffect(() => {
-    const cards = Array.from(
-      document.querySelectorAll('.scroll-stack-card')
-    ) as HTMLElement[];
+    const root = scrollerRef.current;
+    if (!root) return;
 
+    const cards = Array.from(root.querySelectorAll('.scroll-stack-card')) as HTMLElement[];
     cardsRef.current = cards;
 
-    // Record static natural top positions before any transforms are applied
+    // Mobile / touch: native scroll only — Lenis + pin transforms trap finger scroll.
+    if (isMobile) {
+      cards.forEach((card, i) => {
+        card.style.zIndex = `${i + 1}`;
+        card.style.marginBottom = i < cards.length - 1 ? '1.25rem' : '0';
+        card.style.transform = '';
+        card.style.filter = '';
+        card.style.willChange = 'auto';
+      });
+      return () => {
+        cardsRef.current = [];
+        initialTopsRef.current = [];
+        lastTransformsRef.current.clear();
+      };
+    }
+
     initialTopsRef.current = cards.map((card) => {
       const rect = card.getBoundingClientRect();
       return rect.top + window.scrollY;
@@ -238,18 +239,40 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       card.style.transformOrigin = 'top center';
       card.style.backfaceVisibility = 'hidden';
       card.style.transform = 'translateZ(0)';
-      card.style.perspective = '1000px';
     });
 
-    setupLenis();
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1,
+      infinite: false,
+      syncTouch: false,
+    });
+
+    lenis.on('scroll', handleScroll);
+    lenisRef.current = lenis;
+
+    const raf = (time: number) => {
+      lenis.raf(time);
+      animationFrameRef.current = requestAnimationFrame(raf);
+    };
+    animationFrameRef.current = requestAnimationFrame(raf);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
     updateCardTransforms();
 
     return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
       if (lenisRef.current) {
         lenisRef.current.destroy();
+        lenisRef.current = null;
       }
       stackCompletedRef.current = false;
       cardsRef.current = [];
@@ -258,6 +281,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       isUpdatingRef.current = false;
     };
   }, [
+    isMobile,
     itemDistance,
     itemScale,
     itemStackDistance,
@@ -268,15 +292,18 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     blurAmount,
     useWindowScroll,
     onStackComplete,
-    setupLenis,
+    handleScroll,
     updateCardTransforms,
   ]);
 
   return (
-    <div className={`scroll-stack-scroller ${className}`.trim()} ref={scrollerRef}>
+    <div
+      className={`scroll-stack-scroller ${isMobile ? 'scroll-stack-scroller--static' : ''} ${className}`.trim()}
+      ref={scrollerRef}
+    >
       <div className="scroll-stack-inner">
         {children}
-        <div className="scroll-stack-end" />
+        {!isMobile && <div className="scroll-stack-end" />}
       </div>
     </div>
   );

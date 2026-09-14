@@ -8,19 +8,48 @@
   position: relative;
   width: 100%;
   padding-top: 4vh;
-  padding-bottom: 50vh; /* creates the runway so all cards stack and lock at the top */
+  padding-bottom: 50vh; /* runway so cards can stack on desktop */
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .scroll-stack-inner {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .scroll-stack-inner {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
+/* Mobile: normal document flow — no pin runway / no stuck scroll */
+.scroll-stack-scroller--static .scroll-stack-inner {
+  padding-top: 0.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.scroll-stack-scroller--static .scroll-stack-card {
+  will-change: auto;
+  transform: none !important;
+  filter: none !important;
 }
 
 .scroll-stack-card {
   position: relative;
   width: 100%;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
   box-sizing: border-box;
   transform-origin: top center;
   will-change: transform, filter;
   backface-visibility: hidden;
   transform-style: preserve-3d;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
 }
 
 .scroll-stack-end {

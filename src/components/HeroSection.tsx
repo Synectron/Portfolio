@@ -69,10 +69,13 @@ export const HeroSection: React.FC = () => {
         <img
           src="/firstHero.jpeg"
           alt={profile.name}
-          className="h-[72vh] sm:h-[80vh] lg:h-screen w-auto max-w-[min(100%,520px)] object-cover object-top origin-bottom lg:origin-right scale-95 md:scale-[0.98] lg:scale-100"
+          className="h-[78vh] sm:h-[82vh] lg:h-screen w-auto max-w-[min(100%,560px)] object-cover object-top origin-bottom lg:origin-right scale-100 brightness-110 contrast-105 lg:brightness-100 lg:contrast-100"
         />
-        <div className="absolute inset-y-0 left-0 w-full lg:w-1/2 bg-gradient-to-r from-black via-black/90 to-transparent pointer-events-none" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none lg:hidden" />
+        {/* Desktop: heavy left wash so copy stays readable */}
+        <div className="hidden lg:block absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-black via-black/90 to-transparent pointer-events-none" />
+        {/* Mobile: light top/bottom fades only — keep the portrait bright */}
+        <div className="lg:hidden absolute inset-x-0 top-0 h-[42%] bg-gradient-to-b from-black via-black/55 to-transparent pointer-events-none" />
+        <div className="lg:hidden absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/70 to-transparent pointer-events-none" />
 
         <div className="absolute bottom-6 right-6 lg:bottom-10 lg:right-12 pointer-events-none flex items-center justify-center z-10">
           <div className="relative flex items-center justify-center">
