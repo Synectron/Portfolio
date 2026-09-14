@@ -1,40 +1,20 @@
-import { useEffect } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Navigation from "./sections/Navigation";
-import Hero from "./sections/Hero";
-import About from "./sections/About";
-import Experience from "./sections/Experience";
-import Skills from "./sections/Skills";
-import Projects from "./sections/Projects";
-import Achievements from "./sections/Achievements";
-import Contact from "./sections/Contact";
-import Footer from "./sections/Footer";
-
-gsap.registerPlugin(ScrollTrigger);
+import React from 'react';
+import { HeroSection } from './components/HeroSection';
+import { AboutSection } from './components/AboutSection';
+import { ProjectsSection } from './components/ProjectsSection';
+import { SkillsSection } from './components/SkillsSection';
+import { ExperienceSection } from './components/ExperienceSection';
+import { ContactSection } from './components/ContactSection';
 
 function App() {
-  useEffect(() => {
-    document.documentElement.style.scrollBehavior = "smooth";
-    ScrollTrigger.refresh();
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, []);
-
   return (
-    <div className="relative min-h-screen bg-void text-foreground overflow-x-hidden">
-      <Navigation />
-      <main>
-        <Hero />
-        <About />
-        <Experience />
-        <Projects />
-        <Skills />
-        <Achievements />
-        <Contact />
-      </main>
-      <Footer />
+    <div className="w-full min-h-screen bg-black text-[#E8DFD8] selection:bg-[#cbb59d] selection:text-black">
+      <HeroSection />
+      <AboutSection />
+      <ProjectsSection />
+      <SkillsSection />
+      <ExperienceSection />
+      <ContactSection />
     </div>
   );
 }
