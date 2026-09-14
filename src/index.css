@@ -160,6 +160,11 @@
       transform: translateY(0);
     }
   }
+
+  @keyframes hero-sweep {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(200%); }
+  }
 }
 
 ::-webkit-scrollbar {
