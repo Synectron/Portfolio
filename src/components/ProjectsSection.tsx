@@ -1,14 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import ScrollStack, { ScrollStackItem } from './ScrollStack';
-import { projects as resumeProjects, profile } from '../data/resume';
+import { projects as resumeProjects } from '../data/resume';
 
 interface Project {
   number: string;
   title: string;
   category: string;
   description: string;
-  githubUrl: string;
   tech: string[];
   metrics: { label: string; value: string }[];
 }
@@ -18,7 +17,6 @@ const projects: Project[] = resumeProjects.map((p, i) => ({
   title: p.title,
   category: `${p.client} · ${p.period}`.toUpperCase(),
   description: `${p.description} ${p.highlights.join(' ')}`,
-  githubUrl: profile.links.github,
   tech: p.tech,
   metrics: [
     { label: p.metric.label.toUpperCase(), value: p.metric.value },
@@ -103,7 +101,7 @@ export const ProjectsSection: React.FC = () => {
                   >
                     {project.description}
                   </p>
-                  <div className="flex flex-wrap gap-2 mb-6">
+                  <div className="flex flex-wrap gap-2">
                     {project.tech.map((t) => (
                       <span
                         key={t}
@@ -114,18 +112,7 @@ export const ProjectsSection: React.FC = () => {
                       </span>
                     ))}
                   </div>
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center justify-center space-x-3 px-6 py-3.5 border border-[#8C6D4F] bg-[#16120E] hover:border-[#D4AF37] hover:bg-[#D4AF37] text-[#EAD8C7] hover:text-black text-[11px] font-medium tracking-[0.24em] uppercase transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.1)]"
-                    style={{ fontFamily: "'Montserrat', sans-serif" }}
-                  >
-                    <span>VIEW ON GITHUB</span>
-                    <span>↗</span>
-                  </a>
                 </div>
-
                 <div className="lg:col-span-5 space-y-4">
                   {project.metrics.map((m) => (
                     <div

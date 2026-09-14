@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import watermarkImg from '../assets/watermark.png';
-import heroImg from '../assets/hero.jpg';
 import { profile } from '../data/resume';
 
 const containerVariants: Variants = {
@@ -68,7 +67,7 @@ export const HeroSection: React.FC = () => {
       {/* Right-side portrait (static image in place of reel video) */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-black flex items-end justify-center lg:items-center lg:justify-end">
         <img
-          src={heroImg}
+          src="/firstHero.jpeg"
           alt={profile.name}
           className="h-[72vh] sm:h-[80vh] lg:h-screen w-auto max-w-[min(100%,520px)] object-cover object-top origin-bottom lg:origin-right scale-95 md:scale-[0.98] lg:scale-100"
         />

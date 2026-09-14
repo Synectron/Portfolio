@@ -25,13 +25,6 @@ const journey: RouteStop[] = [
     organization: education.school.toUpperCase(),
     description: 'Foundation in Information Technology — systems, software engineering, and product delivery.',
   },
-  {
-    id: String(experiences.length + 2).padStart(2, '0'),
-    year: achievements[0].year,
-    title: achievements[0].title.toUpperCase(),
-    organization: achievements[0].org.toUpperCase(),
-    description: achievements[0].description,
-  },
 ];
 
 export const ExperienceSection: React.FC = () => {
@@ -127,6 +120,79 @@ export const ExperienceSection: React.FC = () => {
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
                   {stop.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-20 pt-14 border-t border-[#8C6D4F]/20">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="flex items-center space-x-4 mb-6"
+          >
+            <span
+              className="text-[11px] font-medium tracking-[0.35em] uppercase text-[#D4AF37]"
+              style={{ fontFamily: "'Montserrat', sans-serif" }}
+            >
+              REWARDS & RECOGNITION
+            </span>
+            <div className="w-16 h-[1px] bg-gradient-to-r from-[#D4AF37]/80 via-[#8C6D4F]/40 to-transparent" />
+          </motion.div>
+
+          <motion.h3
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl sm:text-4xl tracking-tight uppercase leading-[0.9] mb-10"
+            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+          >
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-[#D5CBC0] to-[#605448]">
+              MARKS ON{' '}
+            </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#F7E7C4] via-[#C99E5D] to-[#543B1A]">
+              THE ROUTE.
+            </span>
+          </motion.h3>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {achievements.map((reward, index) => (
+              <motion.div
+                key={reward.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-30px' }}
+                transition={{ duration: 0.6, delay: index * 0.05 }}
+                className="relative group border border-[#8C6D4F]/35 bg-[#100D0B]/80 p-5 sm:p-6 hover:border-[#D4AF37]/70 transition-colors duration-300"
+              >
+                <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-[#D4AF37]/50 group-hover:border-[#D4AF37] transition-colors" />
+                <div className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b border-r border-[#D4AF37]/50 group-hover:border-[#D4AF37] transition-colors" />
+
+                <div className="flex items-baseline justify-between gap-3 mb-2">
+                  <span className="text-[10px] font-mono tracking-[0.22em] text-[#D4AF37]">
+                    {reward.year}
+                  </span>
+                  <span
+                    className="text-[9px] tracking-[0.18em] uppercase text-[#8C6D4F] text-right"
+                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  >
+                    {reward.org}
+                  </span>
+                </div>
+                <h4
+                  className="text-xl sm:text-2xl tracking-wide text-white group-hover:text-[#F7E7C4] transition-colors mb-2 leading-none"
+                  style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+                >
+                  {reward.title}
+                </h4>
+                <p
+                  className="text-xs font-light text-[#A8988B] leading-relaxed group-hover:text-[#D5CBC0] transition-colors"
+                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                >
+                  {reward.description}
                 </p>
               </motion.div>
             ))}

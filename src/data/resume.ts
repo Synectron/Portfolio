@@ -22,14 +22,14 @@ export const profile = {
     github: "https://github.com/Synectron",
   },
   summary:
-    "Senior Software Developer with deep expertise in JavaScript/TypeScript, Node.js/Express, API design, and data orchestration between enterprise systems and modern cloud apps. Client-facing collaborator on American Express, Bayer, and National Private Banking engagements — cutting a core workflow from a 26-day process to a 1-day SLA.",
+    "Senior Software Developer with deep expertise in JavaScript/TypeScript, Node.js/Express, API design, and data orchestration between enterprise systems and modern cloud apps. Client-facing collaborator on American Express, Bayer, and U.S. Bank engagements — cutting a core workflow from a 26-day process to a 1-day SLA.",
 };
 
 export const highlights = [
   {
     title: "Enterprise Delivery",
     description:
-      "Client-facing work across Amex, Bayer, and private banking — translating requirements into shipped systems.",
+      "Client-facing work across Amex, Bayer, and U.S. Bank — translating requirements into shipped systems.",
   },
   {
     title: "API & Integration",
@@ -72,7 +72,7 @@ export const experiences = [
     location: "India",
     domain: "BFSI",
     description:
-      "Built and maintained a National Private Banking wealth portal deeply integrated with banking core systems.",
+      "Built and maintained a U.S. Bank wealth portal deeply integrated with banking core systems.",
     achievements: [
       "Cut a core business process from 26 days to a 1-day SLA (−88%)",
       "Designed data orchestration / ETL pipelines for financial data consistency",
@@ -175,8 +175,8 @@ export const projects = [
     metric: { label: "Impact", value: "Enterprise" },
   },
   {
-    title: "National Private Banking Portal",
-    client: "National Private Banking",
+    title: "U.S. Bank Wealth Portal",
+    client: "U.S. Bank",
     period: "2018 – 2024",
     description:
       "Wealth and loan portal for advisors, bankers, and clients — tightly integrated with banking core systems.",
@@ -199,6 +199,27 @@ export const achievements = [
       "Recognized by project leadership for exceptional delivery and contribution to client success.",
   },
   {
+    title: "Process Transformation",
+    org: "U.S. Bank",
+    year: "2018–2024",
+    description:
+      "Helped drive an 88% reduction in a core business process — from 26 days to a 1-day SLA.",
+  },
+  {
+    title: "Enterprise Client Delivery",
+    org: "EPAM · Amex · Bayer",
+    year: "2024–Present",
+    description:
+      "Client-facing engineer on American Express and Bayer engagements — shipping microfrontends, integrations, and accessible journeys.",
+  },
+  {
+    title: "Mentorship & Knowledge Transfer",
+    org: "EPAM · Wipro",
+    year: "2018–Present",
+    description:
+      "Mentored juniors through code reviews and pairing, and ran KT sessions that onboarded client teams onto production portals.",
+  },
+  {
     title: "Certificate of Appreciation",
     org: "SRM Institute",
     year: "2018",
@@ -211,13 +232,6 @@ export const achievements = [
     year: "2014–2018",
     description:
       "Led management and sponsorship teams for campus events — organization at scale.",
-  },
-  {
-    title: "Process Transformation",
-    org: "National Private Banking",
-    year: "2018–2024",
-    description:
-      "Helped drive an 88% reduction in a core business process — from 26 days to a 1-day SLA.",
   },
 ];
 

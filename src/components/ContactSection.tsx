@@ -2,18 +2,68 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { profile } from '../data/resume';
 
+type FormStatus = 'idle' | 'sending' | 'sent' | 'error';
+
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<FormStatus>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const subject = encodeURIComponent(`Portfolio inquiry from ${formData.name}`);
+  const openMailFallback = () => {
+    const subject = encodeURIComponent(`Portfolio inquiry from ${formData.name || 'visitor'}`);
     const body = encodeURIComponent(
-      `${formData.message}\n\n— ${formData.name}\n${formData.email}`
+      `${formData.message || ''}\n\n— ${formData.name || ''}\n${formData.email || ''}`
     );
-    window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
-    setSent(true);
+    window.open(
+      `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(profile.email)}&su=${subject}&body=${body}`,
+      '_blank',
+      'noopener,noreferrer'
+    );
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('sending');
+    setErrorMsg('');
+
+    try {
+      const res = await fetch(`https://formsubmit.co/ajax/${profile.email}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          _subject: `Portfolio inquiry from ${formData.name}`,
+          _template: 'table',
+        }),
+      });
+
+      const data = (await res.json().catch(() => ({}))) as {
+        success?: string | boolean;
+        message?: string;
+      };
+
+      if (res.ok && (data.success === true || data.success === 'true')) {
+        setStatus('sent');
+        setFormData({ name: '', email: '', message: '' });
+        return;
+      }
+
+      throw new Error(data.message || 'Dispatch failed');
+    } catch {
+      // mailto/FormSubmit often fails without a desktop mail client —
+      // open a prefilled Gmail compose so the message isn't lost.
+      openMailFallback();
+      setStatus('error');
+      setErrorMsg(
+        'Opened Gmail with your message ready. Hit Send there, or email me directly at ' +
+          profile.email
+      );
+    }
   };
 
   return (
@@ -125,7 +175,7 @@ export const ContactSection: React.FC = () => {
             <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-[#D4AF37]/60" />
             <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[#D4AF37]/60" />
 
-            {sent ? (
+            {status === 'sent' ? (
               <div className="py-16 text-center space-y-4">
                 <div className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-[#D4AF37] text-[#D4AF37] text-sm">
                   ✓
@@ -140,8 +190,16 @@ export const ContactSection: React.FC = () => {
                   className="text-xs text-[#A8988B] font-light"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
-                  Opening your mail client…
+                  Message received — I&apos;ll get back to you soon.
                 </p>
+                <button
+                  type="button"
+                  onClick={() => setStatus('idle')}
+                  className="text-[10px] tracking-[0.2em] uppercase text-[#8C6D4F] hover:text-[#D4AF37] transition-colors"
+                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                >
+                  Send another
+                </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -152,6 +210,7 @@ export const ContactSection: React.FC = () => {
                     </span>
                     <input
                       type="text"
+                      name="name"
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -167,6 +226,7 @@ export const ContactSection: React.FC = () => {
                     </span>
                     <input
                       type="email"
+                      name="email"
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -182,6 +242,7 @@ export const ContactSection: React.FC = () => {
                     // PAYLOAD
                   </span>
                   <textarea
+                    name="message"
                     required
                     rows={4}
                     value={formData.message}
@@ -192,12 +253,32 @@ export const ContactSection: React.FC = () => {
                   />
                 </div>
 
+                {status === 'error' && (
+                  <div className="space-y-3">
+                    <p
+                      className="text-xs text-[#C99E5D]"
+                      style={{ fontFamily: "'Montserrat', sans-serif" }}
+                    >
+                      {errorMsg}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={openMailFallback}
+                      className="w-full py-3 border border-[#D4AF37]/50 text-[#F7E7C4] text-[11px] font-medium tracking-[0.2em] uppercase hover:bg-[#D4AF37]/10 transition-colors"
+                      style={{ fontFamily: "'Montserrat', sans-serif" }}
+                    >
+                      Open in Gmail ↗
+                    </button>
+                  </div>
+                )}
+
                 <button
                   type="submit"
-                  className="w-full py-3.5 border border-[#8C6D4F]/50 bg-[#14100D] hover:border-[#D4AF37] hover:bg-[#1A1510] text-[#E8DFD8] hover:text-[#F7E7C4] text-xs font-medium tracking-[0.25em] uppercase transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.5)]"
+                  disabled={status === 'sending'}
+                  className="w-full py-3.5 border border-[#8C6D4F]/50 bg-[#14100D] hover:border-[#D4AF37] hover:bg-[#1A1510] text-[#E8DFD8] hover:text-[#F7E7C4] text-xs font-medium tracking-[0.25em] uppercase transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.5)] disabled:opacity-60 disabled:cursor-wait"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
-                  EXECUTE DISPATCH ↗
+                  {status === 'sending' ? 'TRANSMITTING…' : 'EXECUTE DISPATCH ↗'}
                 </button>
               </form>
             )}
